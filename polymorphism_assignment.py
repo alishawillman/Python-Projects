@@ -2,9 +2,9 @@
 
 #Parent class
 class Management:
-    name = ""
-    email = ""
-    password = ""
+    name = "Jamie"
+    email = "jamie@gmail.com"
+    password = "password123"
 
     def login_info(self):
         entry_name = input("Enter your name: ")
@@ -17,9 +17,9 @@ class Management:
 
 #Child class
 class Employee(Management):
-    department = ""
-    wage = ""
-    employee_number = ""
+    department = "store"
+    wage = "15.00"
+    employee_number = "1234"
 
     def login_info(self):
         entry_name = input("Enter your name: ")
@@ -32,15 +32,15 @@ class Employee(Management):
 
 #Child class
 class Customer(Management):
-    address = ""
-    phone_number = ""
-    orders = ""
-    passcode = ""
+    address = "100 B St"
+    phone_number = "111-111-1111"
+    orders = "12"
+    passcode = "2345"
 
     def login_info(self):
         entry_name = input("Enter your name: ")
         entry_email = input("Enter your email: ")
-        entry_passcode = input("Enter your password: ")
+        entry_passcode = input("Enter your passcode: ")
         if (entry_email == self.email and entry_passcode == self.passcode):
             print("Welcome back, {}!".format(entry_name))
         else:
@@ -54,5 +54,5 @@ manager.login_info()
 employees = Employee()
 employees.login_info()
 
-user = Customers()
+user = Customer()
 user.login_info()
