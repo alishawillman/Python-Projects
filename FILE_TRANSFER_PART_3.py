@@ -1,4 +1,5 @@
 
+#importing packages
 from tkinter import *
 import shutil
 import time
@@ -7,47 +8,78 @@ from tkinter import filedialog
 
 root = Tk()
 root.title('File Manager')
-root.geometry("300x250")
+root.geometry("600x200")
 
+#tkinter widgets
+def create_widgets():
+    link_label = Label(root, text = "Select Files To Copy:")
+    link_label.grid(row = 1, column = 0,
+                    pady = 5, padx = 5)
 
-def select_folder():
-    foldername = filedialog.askdirectory()
-    print(foldername)
-    return foldername
+    root.sourceText = Entry(root, width = 50,
+                            textvariable = sourceLocation)
+    root.sourceText.grid(row = 1, column = 1,
+                         pady = 5, padx = 5,
+                         columnspan = 2)
+
+    source_browsebtn = Button(root,text = "Browse",
+                              command = SourceBrowse, width = 15)
+    source_browsebtn.grid(row = 1, column = 3,
+                          pady = 5, padx = 5)
+
+    destinationLabel = Label(root, text = "Select The Destination:")
+    destinationLabel.grid(row = 2, column = 0,
+                          pady = 5, padx = 5)
+    root.destinationText = Entry(root, width = 50,
+                                 textvariable = destinationLocation)
+    root.destinationText.grid(row = 2, column = 1,
+                              pady = 5, padx = 5,
+                              columnspan = 2)
+    dest_browsebtn = Button(root, text ="Browse",
+                            command = DestinationBrowse, width = 15)
+    dest_browsebtn.grid(row = 2, column = 3,
+                        pady = 5, padx = 5)
+
+    move_button = Button(root, text="Move Files", command= move_to, width = 15)
+    move_button.grid(row = 3, column = 1,
+                     pady = 5, padx = 5)
+
+    check_button = Button(root, text="File Check", command= file_check, width = 15)
+    check_button.grid(row = 3, column = 2,
+                      pady = 5, padx = 5)
+                             
+
+def SourceBrowse():
+    sourcedirectory = filedialog.askdirectory()
+    root.sourceText.insert('1', sourcedirectory)
+
+def DestinationBrowse():
+    destinationdirectory = filedialog.askdirectory()
+    root.destinationText.insert('1', destinationdirectory)
     
 
 def move_to():
-    src = filedialog.askdirectory()
-    dst = filedialog.askdirectory()
+    source_location = sourceLocation.get()
+    destination_location = destinationLocation.get()
 
     SECONDS_IN_DAY = 24 * 60 * 60
     now = time.time()
     before = now - SECONDS_IN_DAY
     def last_mod_time(fname):
         return os.path.getmtime(fname)
-    for fname in os.listdir(src):
-        src_fname = os.path.join(src, fname)
+    for fname in os.listdir(sourceLocation.get()):
+        src_fname = os.path.join(sourceLocation.get(), fname)
         if last_mod_time(src_fname) > before:
-            dst_fname = os.path.join(dst, fname)
+            dst_fname = os.path.join(destinationLocation.get(), fname)
             shutil.move(src_fname, dst_fname)
 
 def file_check():
-    folderList = filedialog.askdirectory()
-    sortlist = sorted(os.listdir(folderList))
-    i=0
-    print("Files in ", folderList, "folder are:")
-    while(i<len(sortlist)):
-        print(sortlist[i]+'\n')
-        i+=1
-            
+    filename = filedialog.askopenfilename(initialdir = "/", title = "File Check",
+        filetypes = (("Text files","*.txt*"),("all files","*.*")))
+    
+sourceLocation= StringVar()
+destinationLocation= StringVar()
 
-select_button = Button(root, text="Browse Folders", command= select_folder)
-select_button.pack(pady=20)
 
-move_button = Button(root, text="Move To Folder", command= move_to)
-move_button.pack(pady=22)
-
-check_button = Button(root, text="File Check", command= file_check)
-check_button.pack(pady=24)
-
+create_widgets()
 root.mainloop()
