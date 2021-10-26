@@ -11,10 +11,9 @@ root.geometry("300x250")
 
 
 def select_folder():
-    filename = filedialog.askopenfilename(
-        initialdir = "/", title = "Select a File",
-        filetypes = (("Text files", "*.txt*"), ("all files", "*.*")))
-    print(filename)
+    foldername = filedialog.askdirectory()
+    print(foldername)
+    return foldername
     
 
 def move_to():
@@ -42,7 +41,7 @@ def file_check():
         i+=1
             
 
-select_button = Button(root, text="Browse Files", command= select_folder)
+select_button = Button(root, text="Browse Folders", command= select_folder)
 select_button.pack(pady=20)
 
 move_button = Button(root, text="Move To Folder", command= move_to)
